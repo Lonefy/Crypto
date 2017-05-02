@@ -24,7 +24,7 @@ module.exports = (function() {
     function AEScrypt(txt, key) {
 
         key = CryptoJS.enc.Utf8.parse(key);
-        console.log(123213)
+
         return CryptoJS.AES.encrypt(txt, key, {
             iv: CryptoJS.enc.Utf8.parse(''),
             mode: CryptoJS.mode.CBC,
