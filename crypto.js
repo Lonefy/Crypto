@@ -5,8 +5,9 @@ module.exports = (function() {
 
     JSEncrypt = JSEncrypt.JSEncrypt
 
-
-
+    /**
+     * RSA part
+     */
     function RSAencrypt(txt, pub_key) {
         var crypt = new JSEncrypt();
         crypt.setPublicKey(pub_key);
@@ -21,15 +22,43 @@ module.exports = (function() {
         return crypt.decrypt(txt)
     }
 
-    function AEScrypt(txt, key) {
+
+    /**
+     * AES part
+     */
+    function AESencrypt(txt, key) {
 
         key = CryptoJS.enc.Utf8.parse(key);
-        console.log(123213)
+
         return CryptoJS.AES.encrypt(txt, key, {
             iv: CryptoJS.enc.Utf8.parse(''),
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.ZeroPadding
         }).toString()
+    }
+
+    function AESdecrypt(txt, key) {
+
+        key = CryptoJS.enc.Utf8.parse(key);
+        return CryptoJS.AES.decrypt(txt, key, {
+            iv: CryptoJS.enc.Utf8.parse(''),
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.ZeroPadding
+        }).toString()
+    }
+
+    function generatorAESKEY(b) {
+        var bit = b || 16,
+            CHARSET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            l = CHARSET.length,
+            re = []
+
+        for (var i = 16; i ; i--) {
+            let index = Math.floor((Math.random() * 100)) % l;
+            re.push(CHARSET[index])
+        }
+
+        return re.join('')//'1234567890abcdef'
     }
 
     let Crypto = {
@@ -38,7 +67,9 @@ module.exports = (function() {
             decrypt: RSAdecrypt
         },
         AES: {
-            encrypt: AEScrypt
+            generatorKey: generatorAESKEY,
+            encrypt: AESencrypt,
+            decrypt: AESdecrypt
         }
     }
 
